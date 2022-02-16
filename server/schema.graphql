@@ -1,0 +1,54 @@
+scalar DateTime
+
+type User {
+    id: ID!
+    nickname: String
+    collapseNotes: Boolean!
+    email: String
+    username: String
+    address: String
+    notes: [Note!]!
+}
+
+type Note {
+    id: ID!
+    createdAt: DateTime
+    updatedAt: DateTime
+    keyId: String!
+    title: String
+    body: String
+    user: User!
+    userId: String!
+    fields: [Field!]!
+}
+
+type Field {
+    id: ID!
+    note: Note!
+    index: Int
+    name: String!
+    data: String!
+    secret: Boolean!
+    user: User!
+    userId: String!
+}
+
+type Query {
+    ping: String
+    getUser: User
+    getNotes(keyId: String): [Note]
+    getNote(id: String): Note
+    getField(id: String): Field
+}
+
+type Mutation {
+    setCollapseNotes(collapse: Boolean): Boolean
+    setNickname(nickname: String): String
+    createNote(keyId: String, title: String, body: String): Note
+    updateNote(id: String!, title: String, body: String): Note
+    deleteNote(id: String!): String
+    createField(noteId: String!, name: String, data: String, secret: Boolean): Field
+    updateField(id: String!, name: String, data: String, secret: Boolean, index: Int): Field
+    moveField(id: String!, relativeIndex: Int!): [ID]
+    deleteField(id: String!): Field
+}

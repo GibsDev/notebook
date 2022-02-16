@@ -1,0 +1,46 @@
+html, body {
+    background: #eee;
+}
+
+/* Prevent container from getting too big */
+@media only screen and (min-width: 750px) {
+    .container {
+        max-width: 720px;
+    }
+}
+
+/* Custom toast enter and exit animation */
+.animate__fadein {
+    animation-duration: 200ms;
+    animation-name: fadein;
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.animate__fadeout {
+    animation-duration: 200ms;
+    animation-name: fadeout;
+}
+
+@keyframes fadeout {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.Toastify__progress-bar {
+    --toastify-color-progress-light: var(--bs-primary);
+}
+
