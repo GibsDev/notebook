@@ -98,8 +98,11 @@ async function parseTokens(req) {
             auth.web3 = web3;
         }
     }
-    if (auth.jwt || auth.web3) {
-        auth.user = auth.jwt?.user || auth.web3?.user;
+    if (auth.jwt && auth.jwt.user) {
+        auth.user = auth.jwt.user;
+        return auth;
+    } else if (auth.web3 && auth.web3.user) {
+        auth.user = auth.web3.user;
         return auth;
     }
     return null;

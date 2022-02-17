@@ -147,7 +147,7 @@ module.exports = (ctxUserId) => {
                     username
                 }
             });
-            if (login?.userId) {
+            if (login && login.userId) {
                 // TODO throw error?
                 // console.log('This login is already linked to: ' + login.username);
                 return null;
@@ -586,7 +586,10 @@ module.exports = (ctxUserId) => {
                 userId: ctxUserId
             }
         });
-        return login?.username;
+        if (login) {
+            return login.username;
+        }
+        return null;
     }
 
     async function getAddress() {
@@ -595,7 +598,10 @@ module.exports = (ctxUserId) => {
                 userId: ctxUserId
             }
         });
-        return wallet?.address;
+        if (wallet) {
+            return wallet.address;
+        }
+        return null;
     }
 
     const relations = {

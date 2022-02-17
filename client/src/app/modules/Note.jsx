@@ -119,8 +119,8 @@ function Note({ className, id, encryptionKey, query, onDeleted }) {
 
     useEffect(() => {
         setVisible(!query
-            || syncedTitle?.toLowerCase().includes(query.toLowerCase())
-            || syncedBody?.toLowerCase().includes(query.toLowerCase()));
+            || (syncedTitle && syncedTitle.toLowerCase().includes(query.toLowerCase()))
+            || (syncedBody && syncedBody.toLowerCase().includes(query.toLowerCase())));
     }, [query, syncedTitle, syncedBody]);
 
     useEffect(() => {
