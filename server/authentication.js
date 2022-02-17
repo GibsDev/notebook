@@ -5,14 +5,18 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
 const Web3Token = require('web3-token');
+const crypto = require('crypto');
 const noteApp = require('./application.js');
+
+const env = process.env.NODE_ENV || 'development';
+const DEV = (env === 'development');
 
 // Cookie keys
 const JWT_COOKIE = 'jwt';
 const WEB3_COOKIE = 'web3';
 
 const router = express.Router();
-const secret = 'dev'; // TODO crypto.randomBytes(64).toString('hex');
+const secret = DEV ? 'dev' : crypto.randomBytes(64).toString('hex');
 
 /**
  * An in memory structure that holds all invalidated tokens that have not yet expired. Each authentication request checks if the token used is in this structure and thus invalid.

@@ -65,7 +65,6 @@ module.exports = (ctxUserId) => {
     }
 
     async function linkWallet(address) {
-        // TODO migrate over notes from wallet account???
         await prisma.wallet.deleteMany({
             where: {
                 address
@@ -148,8 +147,6 @@ module.exports = (ctxUserId) => {
                 }
             });
             if (login && login.userId) {
-                // TODO throw error?
-                // console.log('This login is already linked to: ' + login.username);
                 return null;
             }
             return prisma.user.update({
@@ -421,7 +418,7 @@ module.exports = (ctxUserId) => {
 
     async function deleteField(fieldId) {
         return prisma.$transaction(async (prisma) => {
-            // TODO do we need to update indexes?
+            // We could updated indexes here, but it makes no functional difference
             const note = await prisma.note.findFirst({
                 where: {
                     fields: {

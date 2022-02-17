@@ -356,4 +356,4 @@ function Field({ className, id, encryptionKey, onDeleted, onMoved, editable = fa
     );
 }
 
-export default Field; // TODO memo?
+export default Field;

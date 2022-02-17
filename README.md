@@ -10,33 +10,28 @@ The `.prisma` file is purely for database purposes. It is the raw model of data.
 
 Explain what each script does and the intended purpose for that script.
 
-## Database setup TODO
+## Database requirements
 
-Describe the requirements for the database. (docker)
+In order for this application to work, you will need to make sure to have docker installed and accessible without needing sudo access from the current user.
 
-## TODO
+You can install docker using their guides here:
+https://docs.docker.com/get-docker/
+https://docs.docker.com/engine/install/ubuntu/
 
-- Create config maker script
-
-- Subscriptions/websockets for changes
-
-- Cleanup/refactoring & documentation
-
-- Write some tests? Make db.js exportable and make container name customizable for tests
+You can follow this gist to get docker access without sudo:
+https://github.com/sindresorhus/guides/blob/main/docker-without-sudo.md
 
 ## Authentication
 
 Using JWT tokens that contain a user and an id (and expiration built in)
 JWT lifetime = 1 day
 Stored in HTTP only cookie called `jwt`
-A new JWT encoding/decoding secret is generate each time the server starts TODO
+A new JWT encoding/decoding secret is generate each time the server starts
 An in memory list of invalidated tokens (store an ID and expiration)
 Regularly prunes the invalidated JWT tokens list for expired tokens every 10 minutes
 Client can also set their own `web3` cookie that contains a web3-token
 `jwt` will take priority over `web3` when authenticating on the server
 `web3` does not rely on the server side encryption id
-
-TODO would it make sense to hand out `jwt` tokens using shorter term `web3` signatures? That way a token would invalidate if the server restarted. Since we are already handling jwt server side and it would be super simple (and technicallly more secure with httponly cookie) this should probably be done. This would require some trickery to get web3 linking working.
 
 ## Authorization
 

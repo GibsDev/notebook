@@ -108,8 +108,7 @@ export default function Authentication({ children }) {
         const expiration = new Date();
         expiration.setDate(expiration.getDate() + 1);
         const utcString = expiration.toUTCString();
-        // TODO add Secure to the end of this cookie, currently removed so MM mobile works accross local network
-        document.cookie = `web3=${token}; expires=${utcString} SameSite=Strict;`;
+        document.cookie = `web3=${token}; expires=${utcString} SameSite=Strict; Secure;`;
         // eslint-disable-next-line no-undef
         ethereum.on('accountsChanged', logout);
         syncUser();
