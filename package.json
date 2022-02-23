@@ -7,18 +7,20 @@
     "main": "server/server.js",
     "scripts": {
         "config": "node ./server/config-maker.js",
-        "start-db": "node ./prisma/db.js --start",
-        "stop-db": "node ./prisma/db.js --stop",
-        "reset-db": "node ./prisma/db.js --reset",
-        "prestart": "npm run-script start-db",
+        "db-start": "node ./prisma/db.js --start",
+        "db-stop": "node ./prisma/db.js --stop",
+        "db-reset": "node ./prisma/db.js --reset",
+        "db-backup": "node ./prisma/db.js --backup",
+        "db-restore": "node ./prisma/db.js --restore",
+        "db-schema": "node ./prisma/db.js --schema",
+        "prestart": "npm run-script db-start",
         "start": "npx cross-env NODE_ENV=production npx pm2 start ./server/server.js",
         "stop": "npx pm2 stop server",
-        "poststop": "npm run-script stop-db",
+        "poststop": "npm run-script db-stop",
         "build": "npx cross-env NODE_ENV=production npx webpack --config ./client/webpack.config.js",
-        "predev": "npm run-script start-db",
+        "predev": "npm run-script db-start",
         "dev": "trap 'exit 0' SIGINT; (npx cross-env NODE_ENV=development npx webpack --config ./client/webpack.config.js --watch & cross-env NODE_ENV=development npx nodemon ./server/server.js)",
-        "postdev": "npm run-script stop-db",
-        "schema": "node ./prisma/db.js --schema"
+        "postdev": "npm run-script db-stop"
     },
     "keywords": [],
     "dependencies": {
