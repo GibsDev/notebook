@@ -1,0 +1,16 @@
+# Here is the docker-compose file for the postgres database
+
+services:
+  db:
+    image: postgres:latest
+    container_name: nbdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data/pgdata
+    environment:
+      - POSTGRES_PASSWORD=password
+      - PGDATA=/var/lib/postgresql/data/pgdata
+
+volumes:
+  db-data:

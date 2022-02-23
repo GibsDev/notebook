@@ -1,1 +1,0 @@
-This directory contain the binded folder for the docker postgres data directory
