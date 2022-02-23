@@ -330,7 +330,8 @@ function Note({ className, id, encryptionKey, query, onDeleted }) {
                             <pre className="card-text mb-0"
                                 style={{
                                     fontFamily: 'inherit',
-                                    fontSize: 'inherit'
+                                    fontSize: 'inherit',
+                                    whiteSpace: 'pre-wrap'
                                 }}>{body}</pre>
                         )
                     }
