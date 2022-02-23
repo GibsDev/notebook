@@ -286,6 +286,10 @@ async function restore(filename) {
             try {
                 // Force drop database
                 await spawn('docker', ['exec', '-i', CONTAINER_NAME, '/bin/bash', '-c', 'psql --username postgres -c "DROP DATABASE initdb WITH (FORCE);"']);
+            } catch (e) {
+                if (!e.message.includes('does not exist')) reject(e);
+            }
+            try {
                 // Create database
                 await spawn('docker', ['exec', '-i', CONTAINER_NAME, '/bin/bash', '-c', 'createdb --username postgres initdb']);
                 // Restore from dump
