@@ -92,6 +92,7 @@ module.exports = (ctxUserId) => {
     }
 
     async function registerLogin(username, password) {
+        username = username.toLowerCase();
         return prisma.$transaction(async (prisma) => {
             // Check if it exists
             const login = await prisma.login.findFirst({
@@ -122,6 +123,7 @@ module.exports = (ctxUserId) => {
      * @returns the login user with the given credentials or null
      */
     async function verifyLogin(username, password) {
+        username = username.toLowerCase();
         return prisma.$transaction(async (prisma) => {
             const login = await prisma.login.findFirst({
                 where: {
@@ -140,6 +142,7 @@ module.exports = (ctxUserId) => {
 
 
     async function linkLogin(username, userId) {
+        username = username.toLowerCase();
         return prisma.$transaction(async (prisma) => {
             const login = await prisma.login.findFirst({
                 where: {
@@ -169,6 +172,7 @@ module.exports = (ctxUserId) => {
     }
 
     async function hasLogin(username) {
+        username = username.toLowerCase();
         const login = await prisma.login.findFirst({
             where: {
                 username
@@ -188,6 +192,7 @@ module.exports = (ctxUserId) => {
     }
 
     function getUserFromUsername(username) {
+        username = username.toLowerCase();
         return prisma.user.findFirst({
             where: {
                 login: {
