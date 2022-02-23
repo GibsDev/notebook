@@ -82,7 +82,7 @@ async function verifyInstall() {
         process.exit(1);
     }
     try {
-        await spawn('docker-compose', ['--version'], { silent: true });
+        await spawn('docker', ['compose', 'version'], { silent: true });
     } catch (e) {
         console.error(e.message);
         process.exit(1);
@@ -95,7 +95,7 @@ async function verifyInstall() {
 function createContainer() {
     console.log('Creating database container...');
     return new Promise((resolve, reject) => {
-        const compose = spawn('docker-compose', ['up', '-d']);
+        const compose = spawn('docker', ['compose', 'up', '-d']);
         // Wait until the server is ready to accept connection
         compose.then(() => {
             // Set a timeout to wait for postgres to be ready
