@@ -3,7 +3,7 @@
  */
 const child_process = require('child_process');
 const path = require('path');
-const { createReadStream } = require('fs');
+const { createWriteStream, createReadStream } = require('fs');
 const fs = require('fs/promises');
 
 // make sure this matches in docker-compose.yml
@@ -257,7 +257,7 @@ function backup() {
                 const backup = child_process.spawn('docker', ['exec', '-i', CONTAINER_NAME, '/bin/bash', '-c', 'pg_dump --username postgres initdb']);
                 const outputFile = path.resolve(__dirname, 'backups', Date.now() + '.sql');
                 console.log(outputFile);
-                backup.stdout.pipe(fs.createWriteStream(outputFile));
+                backup.stdout.pipe(createWriteStream(outputFile));
                 await backup;
                 resolve(outputFile);
             });
