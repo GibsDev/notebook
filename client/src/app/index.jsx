@@ -1,11 +1,26 @@
 import { StrictMode } from 'react';
 import { render } from 'react-dom';
 import { ApolloClient, ApolloProvider, InMemoryCache, HttpLink, from } from '@apollo/client';
+import { onError } from '@apollo/client/link/error';
+import { toast } from 'react-toastify';
 
 import App from './App';
 
-import { onError } from '@apollo/client/link/error';
-import { toast } from 'react-toastify';
+// Favicon imports
+import './favicon/android-chrome-192x192.png';
+import './favicon/android-chrome-512x512.png';
+import './favicon/apple-touch-icon.png';
+import './favicon/browserconfig.xml';
+import './favicon/favicon-16x16.png';
+import './favicon/favicon-32x32.png';
+import './favicon/favicon.ico';
+import './favicon/mstile-70x70.png';
+import './favicon/mstile-144x144.png';
+import './favicon/mstile-150x150.png';
+import './favicon/mstile-310x150.png';
+import './favicon/mstile-310x310.png';
+import './favicon/safari-pinned-tab.svg';
+import './favicon/site.webmanifest';
 
 const httpLink = new HttpLink({
     uri: '/gql'

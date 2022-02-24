@@ -44,8 +44,11 @@ module.exports = {
                 }
             },
             {
-                test: /\.(png|jpe?g|svg|gif)$/,
-                use: ['file-loader'],
+                test: /\.(png|jpe?g|svg|gif|webmanifest|ico|xml)$/,
+                loader: 'file-loader',
+                options: {
+                    name: '[name].[ext]'
+                }
             },
             {
                 test: /\.css$/i,
@@ -55,8 +58,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, 'src/template.html'),
-            favicon: path.resolve(__dirname, 'src/favicon.gif')
+            template: path.resolve(__dirname, 'src/template.html')
         }),
         new MiniCssExtractPlugin(),
         new CompressionPlugin({
