@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import { useApolloClient, gql, useLazyQuery } from '@apollo/client';
@@ -58,6 +58,8 @@ function Note({ className, id, encryptionKey, query, onDeleted }) {
 
     const { collapseNotes } = useContext(AuthContext);
 
+    const bodyInputEl = useRef(null);
+
     const [title, setTitle] = useState(undefined);
     const [syncedTitle, setSyncedTitle] = useState(title);
     const [body, setBody] = useState(undefined);
@@ -86,14 +88,14 @@ function Note({ className, id, encryptionKey, query, onDeleted }) {
     );
 
     function parseRawNote({ title: serverTitle, body: serverBody, createdAt, updatedAt, fields }) {
-        if (serverTitle) {
+        if (serverTitle || serverTitle === '') {
             const decTitle = decrypt(serverTitle);
             if (title === undefined) {
                 setTitle(decTitle);
             }
             setSyncedTitle(decTitle);
         }
-        if (serverBody) {
+        if (serverBody || serverBody === '') {
             const decBody = decrypt(serverBody);
             if (body === undefined) {
                 setBody(decBody);
@@ -126,6 +128,8 @@ function Note({ className, id, encryptionKey, query, onDeleted }) {
 
     useEffect(() => {
         resetData();
+        // Let the DOM update first so the ref will work
+        setTimeout(updateBodyInputHeight, 0);
     }, [editable]);
 
     if (!visible) {
@@ -159,6 +163,7 @@ function Note({ className, id, encryptionKey, query, onDeleted }) {
             });
             const rawNote = mutate.data.updateNote;
             parseRawNote(rawNote);
+            updateBodyInputHeight(true);
         } catch (e) {
             console.log(e.message);
         }
@@ -184,8 +189,19 @@ function Note({ className, id, encryptionKey, query, onDeleted }) {
         setCollapsed(!collapsed);
     }
 
+    function updateBodyInputHeight(allowShrink) {
+        const el = bodyInputEl.current;
+        if (!el) return; 
+        if (allowShrink) {
+            el.style.height = 'initial';
+        }
+        const extra = el.offsetHeight - el.clientHeight;
+        el.style.height = (el.scrollHeight + extra) + 'px';
+    }
+
     function onBodyInputChanged(e) {
         setBody(e.target.value);
+        updateBodyInputHeight();
     }
 
     function onTitleInputChanged(e) {
@@ -316,10 +332,12 @@ function Note({ className, id, encryptionKey, query, onDeleted }) {
                         editable ? (
                             <div className="input-group">
                                 <textarea className="form-control"
+                                    ref={bodyInputEl}
                                     placeholder="Body"
                                     value={body}
                                     onChange={onBodyInputChanged}
-                                    onKeyDown={bodyKeyDown}/>
+                                    onFocus={updateBodyInputHeight}
+                                    onKeyDown={bodyKeyDown} />
 
                                 { // Apply and cancel buttons
                                     body !== syncedBody &&
