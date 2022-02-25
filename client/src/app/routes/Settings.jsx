@@ -6,7 +6,7 @@ import UpdateButtons from '../components/UpdateButtons';
 
 export default function Settings() {
 
-    const { user, nickname, collapseNotes, changeNickname, setCollapsedByDefault, username, address, walletToken } = useContext(AuthContext);
+    const { user, nickname, collapseNotes, changeNickname, setCollapsedByDefault, username, address, web3Token } = useContext(AuthContext);
 
     const [isUser, setIsUser] = useState(false);
 
@@ -58,7 +58,7 @@ export default function Settings() {
     }
 
     async function link() {
-        const token = await walletToken('1m');
+        const token = await web3Token('1m');
         const res = await fetch('/auth/link', {
             method: 'POST',
             headers: {

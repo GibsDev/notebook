@@ -79,7 +79,7 @@ export default function Authentication({ children }) {
     }
 
     /* eslint-disable no-undef */
-    async function walletToken(expirationString) {
+    async function web3Token(expirationString) {
         const web3TokenLib = import('web3-token');
         toast.promise(web3TokenLib, {
             pending: 'Loading web3-token bundle...',
@@ -96,22 +96,33 @@ export default function Authentication({ children }) {
                 params: [ethereum.selectedAddress, msg]
             });
         };
-        return Web3Token.sign(mm_sign, {
+        const token = Web3Token.sign(mm_sign, {
             expires_in: expirationString,
             request_id: uuid()
         });
+        return token;
     }
     /* eslint-enable no-undef */
 
     async function walletLogin() {
-        const token = await walletToken('1d');
-        const expiration = new Date();
-        expiration.setDate(expiration.getDate() + 1);
-        const utcString = expiration.toUTCString();
-        document.cookie = `web3=${token}; expires=${utcString} SameSite=Strict; Secure;`;
-        // eslint-disable-next-line no-undef
-        ethereum.on('accountsChanged', logout);
-        syncUser();
+        const token = await web3Token('2m');
+        const login = fetch('/auth/login', {
+            method: 'post',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                web3_token: token
+            }),
+            signal
+        });
+        toast.promise(login, {
+            pending: 'Logging in...',
+            error: 'Error logging in'
+        });
+        if ((await login).ok) {
+            syncUser();
+        }
     }
 
     async function register(username, password) {
@@ -183,7 +194,7 @@ export default function Authentication({ children }) {
         syncUser();
     }
 
-    return <AuthContext.Provider value={{ user: id, nickname, username, address, collapseNotes, setCollapsedByDefault, changeNickname, login, register,  walletLogin, walletToken, logout }}>
+    return <AuthContext.Provider value={{ user: id, nickname, username, address, collapseNotes, setCollapsedByDefault, changeNickname, login, register,  walletLogin, web3Token, logout }}>
         {children}
     </AuthContext.Provider>;
 }
