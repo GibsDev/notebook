@@ -101,6 +101,8 @@ function Note({ className, id, encryptionKey, query, onDeleted }) {
             setSyncedBody(decBody);
         }
         if (fields) {
+            fields = fields.sort((f1, f2) => f1.index - f2.index);
+            console.log(fields.map(f => f.index));
             const fieldIds = fields.map(f => f.id);
             setFieldIds(fieldIds);
         }

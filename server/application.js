@@ -314,13 +314,20 @@ module.exports = (ctxUserId) => {
                     id: noteId
                 },
                 include: {
-                    fields: true
+                    fields: {
+                        orderBy: {
+                            index: 'asc'
+                        }
+                    }
                 }
             });
             if (note.userId !== ctxUserId) {
                 throw new Error('Permission denied');
             }
-            const index = note.fields.length;
+            let index = 0;
+            if (note.fields.length > 1) {
+                index = note.fields[note.fields.length - 1].index + 1;
+            }
             const field = await prisma.field.create({
                 data: {
                     name,
@@ -394,6 +401,9 @@ module.exports = (ctxUserId) => {
                     index: 'asc'
                 }
             });
+            // Normalize order
+            fields.forEach((field, index) => { field.index = index; });
+            // Get the field that is moving
             const mover = fields.filter(field => field.id == fieldId)[0];
             let newIndex = mover.index;
             if (relativeIndex < 0) {
